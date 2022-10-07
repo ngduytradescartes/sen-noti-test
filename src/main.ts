@@ -9,6 +9,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(morgan('tiny'));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
