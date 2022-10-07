@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-// import { AppController } from '../app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import configuration from 'src/config';
@@ -9,13 +8,13 @@ import { DappModule } from './dapp/dapp.module';
 import { NotificationModule } from './notification/notification.module';
 import { UserModule } from './user/user.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { EventsModule } from 'src/app/events/events.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
+    EventsModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
-    // MongooseModule.forRootAsync({
-    //   useClass: MongooseConfigService,
-    // }),
     MongooseModule.forRoot(
       'mongodb+srv://exchange_data_app:vu1vlCFmtJEuEAvq@cluster0.chtee.mongodb.net/?retryWrites=true&w=majority',
     ),
@@ -25,7 +24,7 @@ import { SubscriptionModule } from './subscription/subscription.module';
     UserModule,
     SubscriptionModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}

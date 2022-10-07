@@ -21,15 +21,43 @@ const configuration = () => ({
     limit: env === 'development' ? 3 : 10,
   },
   solana: {
-    cluster:
+    taxmanAddress: '9doo2HZQEmh2NgfT3Yx12M89aoBheycYqH1eaR5gKb3e',
+    swapAddress: 'SSW7ooZ1EbEognq5GosbygA3uWW1Hq1NsFq6TsftCFV',
+    farmingAddress: 'DTvdh6Q13SfYxMoWyibBUmQAUqd2pDPSpjdku5a9NLSF',
+    farmingV2Address: '6LaxnmWdYUAJvBJ4a1R8rrsvCRtaY7b43zKiNAU2k3Nx',
+    senAddress: 'SENBBKVCM7homnf5RX9zqpf1GFe935hnbU4uVzY1Y6M',
+    balansolAddress: 'Ff5wgqZ7B63J3iySASitrD6u3h5JHgrHyfSpAmm1Ufmw',
+    interdaoAddress: 'BND6UZZG2rLGtaYLioBtXFnrBtvtp5g6YXWKEc4LLqrJ',
+    senlpAddress: 'Aa3WZX7Xunfebp2MuAcz9CNw8TYTDL7mVrmb11rjyVm6',
+    spltAddress: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    splataAddress: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+    chainId: 103,
+    cluster: 'devnet',
+    endpoint:
       env === 'development'
-        ? 'https://ssc-dao.genesysgo.net/'
+        ? 'https://devnet.genesysgo.net'
         : 'https://sparkling-compatible-telescope.solana-mainnet.quiknode.pro/7585a9ee75601c03a2815eeb8a018c05fa10e736/',
   },
   twitter: {
     token: process.env.TWITTER_BEARER_TOKEN || '',
   },
 });
+
+export interface SolanaConfig {
+  taxmanAddress: string;
+  swapAddress: string;
+  balansolAddress: string;
+  interdaoAddress: string;
+  farmingAddress: string;
+  farmingV2Address: string;
+  senAddress: string;
+  senlpAddress: string;
+  endpoint: string;
+  spltAddress: string;
+  splataAddress: string;
+  chainId: number;
+  cluster: string;
+}
 
 export type EnvironmentVariables = ReturnType<typeof configuration>;
 
