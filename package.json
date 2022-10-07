@@ -27,6 +27,11 @@
     "@nestjs/mapped-types": "^1.1.0",
     "@nestjs/mongoose": "^9.2.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/platform-socket.io": "^9.1.2",
+    "@nestjs/websockets": "^9.1.2",
+    "@project-serum/anchor": "^0.25.0",
+    "@senswap/sen-js": "^1.4.0",
+    "@solana/spl-token-registry": "^0.2.4574",
     "bn.js": "^5.2.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
@@ -35,7 +40,8 @@
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "socket.io": "^4.5.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
