@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Dapp, DappSchema } from 'src/schemas/dapp.schema';
+import {
+  NotificationSchema,
+  Notification,
+} from 'src/schemas/notification.schema';
 
 import { Solana } from './adapters/solana/client';
+import { DappService } from './database/dapp/dapp.service';
+import { NotificationService } from './database/notification/notification.service';
 import { EventsGateway } from './events.gateway';
 import { EventsService } from './events.service';
 import { BalansolService } from './logical/balansol.service';
@@ -11,7 +17,10 @@ import { InterdaoService } from './logical/interdao.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Dapp.name, schema: DappSchema }]),
+    MongooseModule.forFeature([
+      { name: Dapp.name, schema: DappSchema },
+      { name: Notification.name, schema: NotificationSchema },
+    ]),
   ],
   providers: [
     {
@@ -23,7 +32,8 @@ import { InterdaoService } from './logical/interdao.service';
     InterdaoService,
     FarmV2Service,
     EventsService,
-    String,
+    NotificationService,
+    DappService,
   ],
 })
 export class EventsModule {}

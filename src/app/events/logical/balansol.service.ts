@@ -1,17 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
 import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
 import { IdlAccounts } from '@project-serum/anchor/dist/cjs/program/namespace/types';
+import { Model } from 'mongoose';
 import { Socket } from 'socket.io';
 
 import { SolanaConfig } from 'src/config';
+import {
+  Notification,
+  NotificationDocument,
+} from 'src/schemas/notification.schema';
 
 @Injectable()
 export class BalansolService {
   private provider: AnchorProvider;
   program: Program;
   private listeners: number[];
-
+  @InjectModel(Notification.name)
+  private notificationModel: Model<NotificationDocument>;
   private readonly logger = new Logger(BalansolService.name);
 
   constructor(private configService: ConfigService) {

@@ -1,13 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { Dapp } from './dapp.schema';
+import { Types } from 'mongoose';
 
 export type NotificationDocument = Notification & Document;
 
 @Schema()
 export class Notification {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Dapp' })
-  dappId: Dapp;
+  @Prop({ type: Types.ObjectId, ref: 'Dapp' })
+  dappId: Types.ObjectId;
 
   @Prop({ type: String, required: true })
   name: string;

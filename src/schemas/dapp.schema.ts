@@ -5,9 +5,12 @@ export type DappDocument = Dapp & Document;
 @Schema()
 export class Dapp {
   @Prop({ type: String, required: true, unique: true })
-  name: string;
+  address: string;
 
   @Prop({ type: String, required: true, unique: true })
+  name: string;
+
+  @Prop({ type: String, required: true })
   logo: string;
 }
 

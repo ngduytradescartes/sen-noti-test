@@ -4,10 +4,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import configuration from 'src/config';
 import { TestModule } from './test/test.module';
-import { DappModule } from './dapp/dapp.module';
-import { NotificationModule } from './notification/notification.module';
-import { UserModule } from './user/user.module';
-import { SubscriptionModule } from './subscription/subscription.module';
+import { DappModule } from './events/database/dapp/dapp.module';
+import { NotificationModule } from './events/database/notification/notification.module';
+import { UserModule } from './events/database/user/user.module';
+import { SubscriptionModule } from './events/database/subscription/subscription.module';
 import { EventsModule } from 'src/app/events/events.module';
 import { AppController } from './app.controller';
 

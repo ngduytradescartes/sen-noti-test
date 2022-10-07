@@ -1,9 +1,9 @@
 import { IsString, IsObject, IsBoolean, IsDate } from 'class-validator';
-import { Dapp } from 'src/schemas/dapp.schema';
+import { Types } from 'mongoose';
 
 export class NotificationDto {
   @IsObject()
-  dappId: Dapp;
+  dappId: Types.ObjectId;
 
   @IsString()
   name: string;

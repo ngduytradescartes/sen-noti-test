@@ -39,6 +39,10 @@ export class DappService {
     return dapps;
   }
 
+  async getDapp(query: { name?: string; address: string }) {
+    return await this.dappModel.findOne(query).exec();
+  }
+
   async newDapp(dapp: DappDto) {
     const newDapp = await new this.dappModel({ ...dapp }).save();
     return newDapp;

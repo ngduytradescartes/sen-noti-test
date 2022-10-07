@@ -1,9 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
 import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
+import { Model } from 'mongoose';
 import { Socket } from 'socket.io';
+import { NotificationService } from 'src/app/events/database/notification/notification.service';
 
 import { SolanaConfig } from 'src/config';
+import { Dapp, DappDocument } from 'src/schemas/dapp.schema';
+import {
+  NotificationDocument,
+  Notification,
+} from 'src/schemas/notification.schema';
+import { DappService } from '../database/dapp/dapp.service';
+import { NotificationDto } from '../database/notification/notification.dto';
 
 @Injectable()
 export class InterdaoService {
@@ -12,7 +22,15 @@ export class InterdaoService {
   private listeners: number[] = [];
   private readonly logger = new Logger(InterdaoService.name);
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private notificationService: NotificationService,
+    private dappService: DappService,
+    @InjectModel(Notification.name)
+    private notificationModel: Model<NotificationDocument>,
+    @InjectModel(Dapp.name)
+    private dappModel: Model<DappDocument>,
+  ) {
     const { interdaoAddress, endpoint } =
       this.configService.get<SolanaConfig>('solana');
     this.provider = new AnchorProvider(
@@ -24,8 +42,19 @@ export class InterdaoService {
   }
 
   addEventListeners = (socket: Socket) => {
-    this.program.idl.events?.forEach(({ name }) => {
-      const id = this.program.addEventListener(name, (event) => {
+    this.program.idl.events?.forEach(async ({ name }) => {
+      const dapp = await this.dappService.getDapp({
+        address: this.configService.get<SolanaConfig>('solana').interdaoAddress,
+      });
+      const id = this.program.addEventListener(name, async (event) => {
+        const notification: NotificationDto = {
+          dappId: dapp._id,
+          name: dapp.name,
+          content: event.toString(),
+          seen: false,
+          time: new Date(),
+        };
+        await new this.notificationModel(notification).save();
         socket.emit('interdao', { name, content: event });
       });
       this.listeners.push(id);
