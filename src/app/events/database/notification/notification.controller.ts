@@ -4,7 +4,7 @@ import { ParseLimitPipe } from 'src/pipelines/limit.pipe';
 import { ParseOffsetPipe } from 'src/pipelines/offset.pipe';
 import { NotificationService } from './notification.service';
 
-@Controller('/notification')
+@Controller('/notifications')
 export class NotificationController {
   constructor(private readonly service: NotificationService) {}
   @Get()
