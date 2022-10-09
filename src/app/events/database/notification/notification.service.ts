@@ -39,7 +39,7 @@ export class NotificationService {
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
-      .populate('appId')
+      .populate('dappId')
       .exec();
     return notifications;
   }
