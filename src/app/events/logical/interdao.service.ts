@@ -47,7 +47,7 @@ export class InterdaoService {
         address: this.configService.get<SolanaConfig>('solana').interdaoAddress,
       });
       const id = this.program.addEventListener(name, async (event) => {
-        socket.emit('interdao', { name, content: event });
+        socket.emit('notification', { name, content: event });
         const notification: NotificationDto = {
           dappId: dapp._id,
           name: dapp.name,
