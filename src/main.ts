@@ -6,6 +6,9 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: '*',
+  });
   app.use(cookieParser());
   app.use(morgan('tiny'));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
