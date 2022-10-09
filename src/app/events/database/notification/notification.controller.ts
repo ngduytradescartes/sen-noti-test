@@ -15,7 +15,6 @@ export class NotificationController {
   ) {
     return this.service.getNotifications({ search, offset, limit });
   }
-
   @Post()
   async createNotification(@Req() request: Request) {
     return this.service.newNotification(request.body);
