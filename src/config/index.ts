@@ -33,10 +33,10 @@ const configuration = () => ({
     splataAddress: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
     chainId: 103,
     cluster: 'devnet',
-    endpoint:
-      env === 'development'
-        ? 'https://devnet.genesysgo.net'
-        : 'https://sparkling-compatible-telescope.solana-mainnet.quiknode.pro/7585a9ee75601c03a2815eeb8a018c05fa10e736/',
+    endpoint: 'https://devnet.genesysgo.net',
+    // env === 'development'
+    //   ? 'https://devnet.genesysgo.net'
+    //   : 'https://sparkling-compatible-telescope.solana-mainnet.quiknode.pro/7585a9ee75601c03a2815eeb8a018c05fa10e736/',
   },
   twitter: {
     token: process.env.TWITTER_BEARER_TOKEN || '',
