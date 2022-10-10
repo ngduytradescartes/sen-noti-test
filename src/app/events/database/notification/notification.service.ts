@@ -44,12 +44,12 @@ export class NotificationService {
     return notifications;
   }
 
-  // async updateNotification(_id: string, data: NotificationDto) {
-  //   const newNotification = await this.notificationModel
-  //     .findOneAndUpdate({ _id }, data, { new: true })
-  //     .exec();
-  //   return newNotification;
-  // }
+  async updateNotification(_id: string, data: NotificationDto) {
+    const newNotification = await this.notificationModel
+      .findOneAndUpdate({ _id }, data, { new: true })
+      .exec();
+    return newNotification;
+  }
 
   async newNotification(dapp: NotificationDto) {
     const newNotification = await new this.notificationModel({
