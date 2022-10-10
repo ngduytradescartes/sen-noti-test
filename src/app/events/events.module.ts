@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import {
+  ContentTemplate,
+  ContentTemplateSchema,
+} from 'src/schemas/content-template.schema';
 import { Dapp, DappSchema } from 'src/schemas/dapp.schema';
 import {
   NotificationSchema,
@@ -7,6 +11,7 @@ import {
 } from 'src/schemas/notification.schema';
 
 import { Solana } from './adapters/solana/client';
+import { ContentTemplateService } from './database/content-template/content-template.service';
 import { DappService } from './database/dapp/dapp.service';
 import { NotificationService } from './database/notification/notification.service';
 import { EventsGateway } from './events.gateway';
@@ -20,6 +25,7 @@ import { InterdaoService } from './logical/interdao.service';
     MongooseModule.forFeature([
       { name: Dapp.name, schema: DappSchema },
       { name: Notification.name, schema: NotificationSchema },
+      { name: ContentTemplate.name, schema: ContentTemplateSchema },
     ]),
   ],
   providers: [
@@ -33,6 +39,7 @@ import { InterdaoService } from './logical/interdao.service';
     FarmV2Service,
     EventsService,
     NotificationService,
+    ContentTemplateService,
     DappService,
   ],
 })

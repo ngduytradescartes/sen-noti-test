@@ -8,7 +8,7 @@ import { NotificationService } from './notification.service';
 export class NotificationController {
   constructor(private readonly service: NotificationService) {}
   @Get()
-  async getNotification(
+  async getNotifications(
     @Query('offset', ParseOffsetPipe) offset: number,
     @Query('limit', ParseLimitPipe) limit: number,
     @Query('search') search = '',

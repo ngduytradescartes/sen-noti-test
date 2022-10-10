@@ -10,6 +10,7 @@ import { UserModule } from './events/database/user/user.module';
 import { SubscriptionModule } from './events/database/subscription/subscription.module';
 import { EventsModule } from 'src/app/events/events.module';
 import { AppController } from './app.controller';
+import { ContentTemplateModule } from './events/database/content-template/content-template.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AppController } from './app.controller';
     NotificationModule,
     UserModule,
     SubscriptionModule,
+    ContentTemplateModule,
   ],
   controllers: [AppController],
   providers: [],
