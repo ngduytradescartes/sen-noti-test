@@ -1,4 +1,12 @@
-import { Controller, Get, Query, Post, Req, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Req,
+  Patch,
+  Param,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { ParseLimitPipe } from 'src/pipelines/limit.pipe';
 import { ParseOffsetPipe } from 'src/pipelines/offset.pipe';
@@ -15,12 +23,12 @@ export class NotificationController {
   ) {
     return this.service.getNotifications({ search, offset, limit });
   }
-  @Patch()
-  async getNotification(@Req() request: Request) {
-    return this.service.updateNotification(
-      request.body.id,
-      request.body.content,
-    );
+  @Patch('/:id')
+  async getNotification(
+    @Req() request: Request,
+    @Param() params: { id: string },
+  ) {
+    return this.service.updateNotification(params.id, request.body);
   }
   @Post()
   async createNotification(@Req() request: Request) {
