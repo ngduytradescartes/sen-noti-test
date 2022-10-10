@@ -34,13 +34,15 @@ export class NotificationService {
     limit?: number;
   }) {
     const cond = search ? { ...filter, $text: { $search: search } } : filter;
+    console.log('condss: ', cond);
     const notifications = await this.notificationModel
-      .find(cond, this.dbProjection)
+      .find(cond)
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
       .populate('dappId')
       .exec();
+    console.log('notifications: ', notifications);
     return notifications;
   }
 
