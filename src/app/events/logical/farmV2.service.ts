@@ -9,7 +9,7 @@ import { SolanaConfig } from 'src/config';
 export class FarmV2Service {
   private provider: AnchorProvider;
   program: Program;
-  private listeners: number[] = [];
+  private listeners: number[];
   private readonly logger = new Logger(FarmV2Service.name);
 
   constructor(private configService: ConfigService) {
@@ -21,6 +21,7 @@ export class FarmV2Service {
       {},
     );
     this.program = new Program(FarmV2IDL, farmingV2Address, this.provider);
+    this.listeners = [];
   }
 
   addEventListeners = (socket: Socket) => {

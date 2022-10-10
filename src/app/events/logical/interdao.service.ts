@@ -19,7 +19,7 @@ import { NotificationDto } from '../database/notification/notification.dto';
 export class InterdaoService {
   private provider: AnchorProvider;
   program: Program;
-  private listeners: number[] = [];
+  private listeners: number[];
   private readonly logger = new Logger(InterdaoService.name);
 
   constructor(
@@ -39,6 +39,7 @@ export class InterdaoService {
       {},
     );
     this.program = new Program(InterDaoIDL, interdaoAddress, this.provider);
+    this.listeners = [];
   }
 
   addEventListeners = (socket: Socket) => {
@@ -63,7 +64,7 @@ export class InterdaoService {
   };
 
   removeEventListeners = () => {
-    this.listeners.forEach((event) => {
+    this.listeners?.forEach((event) => {
       this.program.removeEventListener(event);
     });
     this.logger.log("Remove Interdao's event listeners successfully");

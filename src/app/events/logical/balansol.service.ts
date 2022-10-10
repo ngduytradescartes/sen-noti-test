@@ -30,12 +30,13 @@ export class BalansolService {
       {},
     );
     this.program = new Program(IDL, balansolAddress, this.provider);
+    this.listeners = [];
   }
 
   addEventListeners = (socket: Socket) => {
     this.program.idl.events?.forEach(({ name }) => {
       const id = this.program.addEventListener(name, (event) => {
-        socket.emit('balansol', { name, content: event });
+        socket.emit('notification', { name, content: event });
       });
       this.listeners.push(id);
     });
