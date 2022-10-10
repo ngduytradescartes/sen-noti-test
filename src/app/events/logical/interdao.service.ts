@@ -34,10 +34,6 @@ export class InterdaoService {
     private notificationService: NotificationService,
     private dappService: DappService,
     private contentTemplateService: ContentTemplateService,
-    @InjectModel(Notification.name)
-    private notificationModel: Model<NotificationDocument>,
-    @InjectModel(Dapp.name)
-    private dappModel: Model<DappDocument>,
   ) {
     const { interdaoAddress, endpoint } =
       this.configService.get<SolanaConfig>('solana');
@@ -97,7 +93,6 @@ export class InterdaoService {
 
         console.log('extraInfo: ', extraInfo);
         const content = `${contentTemplate?.subject} ${contentTemplate?.conjunction} ${contentTemplate?.object}`;
-        socket.emit('notification', { name, content: event });
         const notification: NotificationDto = {
           dappId: dapp._id,
           name: dapp.name,
@@ -105,7 +100,9 @@ export class InterdaoService {
           seen: false,
           time: new Date(),
         };
-        await new this.notificationModel(notification).save();
+        const savedNotification =
+          await this.notificationService.newNotification(notification);
+        socket.emit('notification', { name, content: savedNotification });
       });
       this.listeners.push(id);
     });

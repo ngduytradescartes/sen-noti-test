@@ -54,9 +54,9 @@ export class NotificationService {
     return newNotification;
   }
 
-  async newNotification(dapp: NotificationDto) {
+  async newNotification(notification: NotificationDto) {
     const newNotification = await new this.notificationModel({
-      ...dapp,
+      ...notification,
     }).save();
     return newNotification;
   }
