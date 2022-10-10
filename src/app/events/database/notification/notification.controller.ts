@@ -15,13 +15,13 @@ export class NotificationController {
   ) {
     return this.service.getNotifications({ search, offset, limit });
   }
-  @Patch()
-  async getNotification(@Req() request: Request) {
-    return this.service.updateNotification(
-      request.body.id,
-      request.body.content,
-    );
-  }
+  // @Patch()
+  // async getNotification(@Req() request: Request) {
+  //   return this.service.updateNotification(
+  //     request.body.id,
+  //     request.body.content,
+  //   );
+  // }
   @Post()
   async createNotification(@Req() request: Request) {
     return this.service.newNotification(request.body);
