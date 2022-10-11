@@ -24,11 +24,15 @@ export class NotificationController {
     return this.service.getNotifications({ search, offset, limit });
   }
   @Patch('/:id')
-  async getNotification(
+  async updateNotification(
     @Req() request: Request,
     @Param() params: { id: string },
   ) {
     return this.service.updateNotification(params.id, request.body);
+  }
+  @Patch()
+  async updateNotifications(@Req() request: Request) {
+    return this.service.updateNotifications(request.body);
   }
   @Post()
   async createNotification(@Req() request: Request) {

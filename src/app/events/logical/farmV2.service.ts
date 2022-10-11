@@ -4,12 +4,13 @@ import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
 import { Socket } from 'socket.io';
 
 import { SolanaConfig } from 'src/config';
+import { Listener } from 'src/const';
 
 @Injectable()
 export class FarmV2Service {
   private provider: AnchorProvider;
   program: Program;
-  private listeners: number[];
+  private listeners: Listener[];
   private readonly logger = new Logger(FarmV2Service.name);
 
   constructor(private configService: ConfigService) {
@@ -29,15 +30,16 @@ export class FarmV2Service {
       const id = this.program.addEventListener(name, (event) => {
         socket.emit('farming_v2', { name, content: event });
       });
-      this.listeners.push(id);
+      this.listeners.push({ id, name });
     });
     this.logger.log("Add FarmV2's event listeners successfully");
   };
 
   removeEventListeners = () => {
-    this.listeners.forEach((event) => {
-      this.program.removeEventListener(event);
+    this.listeners.forEach(async (event) => {
+      await this.program.removeEventListener(event.id);
     });
+    this.listeners = [];
     this.logger.log("Remove FarmV2's event listeners successfully");
   };
 }

@@ -12,6 +12,7 @@ import { Socket } from 'socket.io';
 
 import { NotificationService } from 'src/app/events/database/notification/notification.service';
 import { SolanaConfig } from 'src/config';
+import { Listener } from 'src/const';
 import { Dapp, DappDocument } from 'src/schemas/dapp.schema';
 import {
   NotificationDocument,
@@ -26,7 +27,7 @@ import { InterDao, InterDaoIDL } from './idls/interdao';
 export class InterdaoService {
   private provider: AnchorProvider;
   program: Program;
-  private listeners: number[];
+  private listeners: Listener[];
   private readonly logger = new Logger(InterdaoService.name);
 
   constructor(
@@ -70,49 +71,56 @@ export class InterdaoService {
   addEventListeners = (socket: Socket) => {
     this.program.idl.events?.forEach(async ({ name }) => {
       console.log('this.program.idl.events:', name);
-
-      const id = this.program.addEventListener(name, async (event) => {
-        const dapp = await this.dappService.getDapp({
-          address:
-            this.configService.get<SolanaConfig>('solana').interdaoAddress,
-        });
-        console.log('dapp info: ', dapp);
-
-        const contentTemplate =
-          await this.contentTemplateService.getContentTemplate({
-            eventName: name,
-            dappId: dapp._id,
-          });
-
-        console.log('contentTemplate:', name, contentTemplate);
-        console.log('event', event);
-        const extraInfo = await this.getExtraInfo(
-          event[contentTemplate.extraField].toBase58(),
-          contentTemplate.extraField as ExtraInfoType,
-        );
-
-        console.log('extraInfo: ', extraInfo);
-        const content = `${contentTemplate?.subject} ${contentTemplate?.conjunction} ${contentTemplate?.object}`;
-        const notification: NotificationDto = {
-          dappId: dapp._id,
-          name: dapp.name,
-          content,
-          seen: false,
-          time: new Date(),
-        };
-        const savedNotification =
-          await this.notificationService.newNotification(notification);
-        socket.emit('notification', { name, content: savedNotification });
+      const existedEvent = this.listeners.find((val) => {
+        val.name === name;
       });
-      this.listeners.push(id);
+      if (!existedEvent) {
+        const id = this.program.addEventListener(name, async (event) => {
+          const dapp = await this.dappService.getDapp({
+            address:
+              this.configService.get<SolanaConfig>('solana').interdaoAddress,
+          });
+          console.log('dapp info: ', dapp);
+
+          const contentTemplate =
+            await this.contentTemplateService.getContentTemplate({
+              eventName: name,
+              dappId: dapp._id,
+            });
+
+          console.log('contentTemplate:', name, contentTemplate);
+          console.log('event', event);
+          const extraInfo = await this.getExtraInfo(
+            event[contentTemplate.extraField].toBase58(),
+            contentTemplate.extraField as ExtraInfoType,
+          );
+
+          console.log('extraInfo: ', extraInfo);
+          const content = `${contentTemplate?.subject} ${contentTemplate?.conjunction} ${contentTemplate?.object}`;
+          const notification: NotificationDto = {
+            dappId: dapp._id,
+            name: dapp.name,
+            content,
+            seen: false,
+            time: new Date(),
+          };
+          const savedNotification =
+            await this.notificationService.newNotification(notification);
+          console.log('savedNotification: ', savedNotification);
+          socket.emit('notification', { name, content: 'tra' });
+        });
+        this.listeners.push({ id, name });
+      }
     });
     this.logger.log("Add Interdao's event listeners successfully");
   };
 
   removeEventListeners = () => {
-    this.listeners?.forEach((event) => {
-      this.program.removeEventListener(event);
+    console.log('this.listeners: ', this.listeners);
+    this.listeners?.forEach(async (event) => {
+      await this.program.removeEventListener(event.id);
     });
+    this.listeners = [];
     this.logger.log("Remove Interdao's event listeners successfully");
   };
 }

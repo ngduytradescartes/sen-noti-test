@@ -47,11 +47,17 @@ export class NotificationService {
   }
 
   async updateNotification(_id: string, data: NotificationDto) {
-    console.log('data ossss', _id, data);
     const newNotification = await this.notificationModel
       .findOneAndUpdate({ _id }, data, { new: true })
       .exec();
     return newNotification;
+  }
+
+  async updateNotifications(data: NotificationDto) {
+    const newNotifications = await this.notificationModel
+      .updateMany({}, data, { new: true })
+      .exec();
+    return newNotifications;
   }
 
   async newNotification(notification: NotificationDto) {
