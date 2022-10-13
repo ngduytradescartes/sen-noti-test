@@ -70,7 +70,6 @@ export class InterdaoService {
 
   addEventListeners = (socket: Socket) => {
     this.program.idl.events?.forEach(async ({ name }) => {
-      console.log('this.program.idl.events:', name);
       const existedEvent = this.listeners.find((val) => {
         val.name === name;
       });
@@ -80,15 +79,12 @@ export class InterdaoService {
             address:
               this.configService.get<SolanaConfig>('solana').interdaoAddress,
           });
-          console.log('dapp info: ', dapp);
 
           const contentTemplate =
             await this.contentTemplateService.getContentTemplate({
               eventName: name,
               dappId: dapp._id,
             });
-
-          console.log('contentTemplate:', name, contentTemplate);
           console.log('event', event);
           const extraInfo = await this.getExtraInfo(
             event[contentTemplate.extraField].toBase58(),
@@ -106,8 +102,10 @@ export class InterdaoService {
           };
           const savedNotification =
             await this.notificationService.newNotification(notification);
-          console.log('savedNotification: ', savedNotification);
-          socket.emit('notification', { name, content: 'tra' });
+          console.log('savedNotification: ', savedNotification, dapp.address);
+          socket
+            .to(dapp.address)
+            .emit('notification', { data: savedNotification });
         });
         this.listeners.push({ id, name });
       }

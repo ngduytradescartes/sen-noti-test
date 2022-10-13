@@ -6,6 +6,7 @@ import {
   WsResponse,
   OnGatewayInit,
   OnGatewayDisconnect,
+  OnGatewayConnection,
 } from '@nestjs/websockets';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,7 +18,9 @@ import { EventsService } from 'src/app/events/events.service';
     origin: '*',
   },
 })
-export class EventsGateway implements OnGatewayInit, OnGatewayDisconnect {
+export class EventsGateway
+  implements OnGatewayInit, OnGatewayDisconnect, OnGatewayConnection
+{
   constructor(
     private readonly eventsService: EventsService, // private x = 1,
   ) {}
@@ -26,11 +29,17 @@ export class EventsGateway implements OnGatewayInit, OnGatewayDisconnect {
   server: Server;
 
   afterInit(socket: Socket) {
+    console.log('have new connection!');
     this.eventsService.addEventListeners(socket);
   }
 
-  handleDisconnect() {
+  async handleDisconnect() {
+    console.log('sockets.disconnect: ');
     this.eventsService.removeEventListeners();
+  }
+
+  async handleConnection(socket: Socket, ...args: any[]) {
+    socket.join(socket.handshake.query.name);
   }
 
   @SubscribeMessage('events')

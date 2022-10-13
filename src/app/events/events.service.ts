@@ -24,12 +24,9 @@ export class EventsService {
 
   //TODO: Gather dapp services into a factory
   async addEventListeners(socket: Socket) {
-    const dapps = await this.dappModel.find({}, this.dbProjection).exec();
-    dapps.map((dapp) => {
-      this.balansolService.addEventListeners(socket);
-      this.interdaoService.addEventListeners(socket);
-      this.farmV2Service.addEventListeners(socket);
-    });
+    this.balansolService.addEventListeners(socket);
+    this.interdaoService.addEventListeners(socket);
+    this.farmV2Service.addEventListeners(socket);
   }
 
   removeEventListeners() {
